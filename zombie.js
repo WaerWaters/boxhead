@@ -1,0 +1,4 @@
+class Zombie{
+ constructor()
+  
+}
