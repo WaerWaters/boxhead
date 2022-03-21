@@ -19,7 +19,7 @@ class Bullet {
         this.y += this.yDir * this.speed
     }
     outOfBounds() {
-        return(this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.x < 60 && this.y < 240 || this.x < 240 && this.y < 60 || this.x > width-240 && this.y < 60 || this.x > width-60 && this.y < 240 || this.x < 60 && this.y > height-240 || this.x < 240 && this.y > height-60 || this.x > width-240 && this.y > height-60 || this.x > width-60 && this.y > height-240)
+        return(this.x < 0 || this.x > width || this.y < 0 || this.y > height)
     }
     hit() {
 
