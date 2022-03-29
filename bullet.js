@@ -5,7 +5,7 @@ class Bullet {
         this.xDir = xDir
         this.yDir = yDir
         this.size = 1
-        this.speed = 4
+        this.speed = 8
     }
     show() {
         push()

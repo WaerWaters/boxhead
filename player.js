@@ -49,13 +49,19 @@ class Player{
     
     if (this.x <= -2) {
       this.x = this.x + this.speed
-    } else if (this.x >= width-18) {
+    }
+    if (this.x >= width-18) {
       this.x = this.x - this.speed
-    } else if (this.y <= -2) {
+    }
+    if (this.y <= -2) {
       this.y = this.y + this.speed
-    } else if (this.y >= height-18) {
+    }
+    if (this.y >= height-18) {
       this.y = this.y - this.speed
     }
+  }
+  outOfBounds() {
+    return(this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.x < 60 && this.y < 240 || this.x < 240 && this.y < 60 || this.x > width-240 && this.y < 60 || this.x > width-60 && this.y < 240 || this.x < 60 && this.y > height-240 || this.x < 240 && this.y > height-60 || this.x > width-240 && this.y > height-60 || this.x > width-60 && this.y > height-240)
   }
 }
 
