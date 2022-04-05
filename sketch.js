@@ -1,11 +1,18 @@
 let player;
 let zombieSpawned = [];
 let bulletsFired = [];
+let gates = [];
 
 
 function setup() {
   createCanvas(600, 600);
   player = new Player();
+
+  append(gates, new Gate(60, 240, 60, height - 240));
+  append(gates, new Gate(width - 60, 240, width - 60, height - 240));
+  append(gates, new Gate(240, 60, width - 240, 60));
+  append(gates, new Gate(240, height - 60, width - 240, height - 60));
+  
   spawn(5)
 }
 
@@ -69,14 +76,21 @@ function walls() {
 function draw() {
   background(220);
   walls()
-
-  console.log(zombieSpawned.length)
+  for (let i = 0; i < gates.length; i++) {
+    gates[i].show()
+    for (let j = 0; j < zombieSpawned.length; j++) {
+      if (dist(zombieSpawned[j].x, zombieSpawned[j].y, gates[i].x1, gates[i].y1) < 75) {
+        console.log("you suck")
+        gates[i].update()
+      }
+      stroke(0)
+      strokeWeight(1)
+    }
+  }
+  
 
   player.show()
   player.movement()
-  for(let i = 0; i < zombieSpawned.length; i++) {
-    zombieSpawned[i].update();
-  }
   
   for (let i = 0; i < bulletsFired.length; i++) {
     bulletsFired[i].show()
@@ -87,38 +101,17 @@ function draw() {
   }
   
   for (let i = 0; i < zombieSpawned.length; i++) {
-    zombieSpawned[i].show();
-
-  
-
-    /*let v0 = createVector(zombieSpawned[i].x,zombieSpawned[i].y);
-    let v1 = createVector(0-player.x,0-player.y);
-    v1.normalize();
-    console.log(v1);
-    console.log(v0);
-    if(v1.normalize().x > -0.25 && v1.normalize().x < 0.25 && v1.normalize().y < -0.75) {
-      zombieSpawned[i].y += 1
-    } /*else if(angleBetween < 1.125 && angleBetween > 0.375) {
-        zombieSpawned[i].x = zombieSpawned[i].x + 5
-        zombieSpawned[i].y = zombieSpawned[i].y - 5
-    } else if(angleBetween < 1.875 && angleBetween > 1.125) {
-        zombieSpawned[i].y = zombieSpawned[i].y - 5
-    } else if(angleBetween < 1.875 && angleBetween > 1.125) {
-        zombieSpawned[i].y = zombieSpawned[i].y - 5
-    } else if(angleBetween < 2.625 && angleBetween > 1.875) {
-        zombieSpawned[i].x = zombieSpawned[i].x - 5
-        zombieSpawned[i].y = zombieSpawned[i].y - 5
-    } else if(angleBetween < -2.625 && angleBetween > 2.625) {
-        zombieSpawned[i].x = zombieSpawned[i].x - 5
-    } else if(angleBetween < -1.875 && angleBetween > -2.625) {
-        zombieSpawned[i].x = zombieSpawned[i].x - 5
-        zombieSpawned[i].y = zombieSpawned[i].y + 5
-    } else if(angleBetween < -1.125 && angleBetween > -1.875) {
-        zombieSpawned[i].y = zombieSpawned[i].y + 5
-    } else if(angleBetween < -1.125 && angleBetween > -0.375) {
-        zombieSpawned[i].x = zombieSpawned[i].x + 5
-        zombieSpawned[i].y = zombieSpawned[i].y + 5
-    }*/
+    zombieSpawned[i].show()
+    zombieSpawned[i].update()
+    for (let j = 0; j < bulletsFired.length; j++) {
+      if (bulletsFired[j].x < zombieSpawned[i].x + zombieSpawned[i].width && bulletsFired[j].x > zombieSpawned[i].x - zombieSpawned[i].width && bulletsFired[j].y < zombieSpawned[i].y + zombieSpawned[i].height && bulletsFired[j].y > zombieSpawned[i].y - zombieSpawned[i].height) {
+        zombieSpawned[i].health -= 50
+        bulletsFired.splice(j, 1)
+        if (zombieSpawned[i].health == 0) {
+          zombieSpawned.splice(i, 1)
+        }
+      }
+    }
   }
   
   
