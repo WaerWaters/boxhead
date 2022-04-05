@@ -5,7 +5,7 @@ class Zombie{
      this.width = 20;
      this.height = 20;
      this.damage = damage;
-     this.health = health;
+     this.health = 100;
      this.speed = speed;
      this.playerPosX = player.x;
      this.playerPosY = player.y;
@@ -26,8 +26,6 @@ class Zombie{
       let vy = (player.y-this.y)/d;
       this.x+=vx;
       this.y+=vy;  
-      print(this.x);
-      print(this.y);
    }
 }
    

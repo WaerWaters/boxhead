@@ -1,13 +1,20 @@
 let player;
 let zombieSpawned = [];
 let bulletsFired = [];
+let gates = [];
 
 
 
 function setup() {
   createCanvas(600, 600);
   player = new Player();
-  for (let i = 0; i < 10; i++) {
+
+  append(gates, new Gate(60, 240, 60, height - 240));
+  append(gates, new Gate(width - 60, 240, width - 60, height - 240));
+  append(gates, new Gate(240, 60, width - 240, 60));
+  append(gates, new Gate(240, height - 60, width - 240, height - 60));
+
+  for (let i = 0; i < 1; i++) {
     rand = Math.floor(Math.random() * 4)
     if (rand == 0) {
       zombieSpawned[i] = new Zombie(width/2, 20);
@@ -81,14 +88,21 @@ function walls() {
 function draw() {
   background(220);
   walls()
-
-  console.log(Math.floor(Math.random() * 4))
+  for (let i = 0; i < gates.length; i++) {
+    gates[i].show()
+    for (let j = 0; j < zombieSpawned.length; j++) {
+      if (dist(zombieSpawned[j].x, zombieSpawned[j].y, gates[i].x1, gates[i].y1) < 75) {
+        console.log("you suck")
+        gates[i].update()
+      }
+      stroke(0)
+      strokeWeight(1)
+    }
+  }
+  
 
   player.show()
   player.movement()
-  for(let i = 0; i < zombieSpawned.length; i++) {
-    zombieSpawned[i].update();
-  }
   
   for (let i = 0; i < bulletsFired.length; i++) {
     bulletsFired[i].show()
@@ -99,8 +113,17 @@ function draw() {
   }
   
   for (let i = 0; i < zombieSpawned.length; i++) {
-    zombieSpawned[i].show();
-
+    zombieSpawned[i].show()
+    zombieSpawned[i].update()
+    for (let j = 0; j < bulletsFired.length; j++) {
+      if (bulletsFired[j].x < zombieSpawned[i].x + zombieSpawned[i].width && bulletsFired[j].x > zombieSpawned[i].x - zombieSpawned[i].width && bulletsFired[j].y < zombieSpawned[i].y + zombieSpawned[i].height && bulletsFired[j].y > zombieSpawned[i].y - zombieSpawned[i].height) {
+        zombieSpawned[i].health -= 50
+        bulletsFired.splice(j, 1)
+        if (zombieSpawned[i].health == 0) {
+          zombieSpawned.splice(i, 1)
+        }
+      }
+    }
     
 
     /*let v0 = createVector(zombieSpawned[i].x,zombieSpawned[i].y);
