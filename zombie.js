@@ -19,18 +19,10 @@ class Zombie{
    }
    update() {
     let d = dist(this.x,this.y,player.x,player.y)
-    /*if (d<16) {
-        
-      }*/
       let vx = (player.x-this.x)/d;
       let vy = (player.y-this.y)/d;
       this.x+=vx;
       this.y+=vy;  
-      print(this.x);
-      print(this.y);
-   
-   
    }
-   
-  }
+}
    
