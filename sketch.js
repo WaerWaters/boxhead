@@ -29,7 +29,7 @@ function draw() {
   // UI
   textSize(32)
   fill(0)
-  text("points", 30, 30)
+  text(points, 20, 40)
   
   // Round system
   if (round % 10 == 0) {
@@ -68,6 +68,7 @@ function draw() {
         zombieSpawned[i].health -= bulletDamage
         bulletsFired.splice(j, 1)
         if (zombieSpawned[i].health == 0) {
+          points += 100
           zombieSpawned.splice(i, 1)
         }
       }
