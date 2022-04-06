@@ -2,22 +2,24 @@ let player;
 let zombieSpawned = [];
 let bulletsFired = [];
 let gates = [];
-let bulletDamage = 100;
+let bulletDamage = 25;
 let round = 1
 let points = 0
-
+let boss = [];
 
 function setup() {
   createCanvas(600, 600);
   player = new Player();
 
-  append(gates, new Gate(60, 240, 60, height - 240));
+ /* append(gates, new Gate(60, 240, 60, height - 240));
   append(gates, new Gate(width - 60, 240, width - 60, height - 240));
   append(gates, new Gate(240, 60, width - 240, 60));
   append(gates, new Gate(240, height - 60, width - 240, height - 60));
-
+*/
 
 }
+
+
 
 
 function draw() {
@@ -28,24 +30,35 @@ function draw() {
   textSize(32)
   fill(0)
   text(points, 20, 40)
-  text(Math.floor(round), width-50, 40)
   
   // Round system
-  if (round % 10 == 0) {
-    // Spawn boss
+  if (round % 2 == 0) {
+    spawnBoss(1)
+    spawn(round)
+    round += 0.5
   } else if (round % 1 == 0) {
     spawn(round*2)
     round += 0.5
   }
   if (player.health <= 0) {
-      reset(2);
-  } else if (zombieSpawned.length == 0) {
+    console.log(boss.length)
+    round = 1
+    reset(round*2);
+      
+  } else if (zombieSpawned.length == 0 && boss.length == 0){
     round += 0.5
   }
   
   // Player display
   player.show()
   player.movement()
+  for(let j = 0; j < boss.length; j++) {
+    boss[j].update();
+  }
+
+  for(let j = 0; j < boss.length; j++) {
+    boss[j].show();
+  }
   
   // Bullets display and out of bounds system
   for (let i = 0; i < bulletsFired.length; i++) {
@@ -65,13 +78,29 @@ function draw() {
         zombieSpawned[i].health -= bulletDamage
         bulletsFired.splice(j, 1)
         if (zombieSpawned[i].health == 0) {
-          points += 100
+          points += 100;
           zombieSpawned.splice(i, 1)
         }
       }
     }
   }
   
+  for (let l = 0; l < boss.length; l++) {
+    boss[l].show()
+    boss[l].update()
+    for (let j = 0; j < bulletsFired.length; j++) {
+      if (bulletsFired[j].x < boss[l].x + boss[l].width && bulletsFired[j].x > boss[l].x - boss[l].width && bulletsFired[j].y < boss[l].y + boss[l].height && bulletsFired[j].y > boss[l].y - boss[l].height) {
+        boss[l].health -= bulletDamage
+        bulletsFired.splice(j, 1)
+        if (boss[l].health == 0) {
+          points += 100;
+          boss.splice(l, 1)
+        }
+      }
+    }
+  }
+
+
   // Zombie interaction with player
   for(let i = 0; i < zombieSpawned.length; i++){
     let d = dist(zombieSpawned[i].x,zombieSpawned[i].y,player.x,player.y);
@@ -83,7 +112,18 @@ function draw() {
     }
     
   }
-  
+  for(let j = 0; j < boss.length; j++){
+    let d = dist(boss[j].x,boss[j].y,player.x,player.y);
+    let damage = 100;
+    if(d<22) {
+      player.health = player.health - damage;
+      boss.splice(j,1);
+      console.log(player.health);
+    }
+    if(player.health == 0) {
+      reset();
+    }
+  }
   
 }
 
@@ -102,6 +142,20 @@ function spawn(n) {
     }
   }
 }
+function spawnBoss(m){ 
+  for (let j = 0; j < m; j++) {
+    rand = Math.floor(Math.random() * 4)
+    if (rand == 0) {
+      boss[j] = new Boss(width/2, 20, 200 * round/2);
+    } else if (rand == 1) {
+     boss[j] = new Boss(20, height/2, 200 * round/2);
+    } else if (rand == 2) {
+      boss[j] = new Boss(width/2, height - 40, 200 * round/2);
+    } else if (rand == 3) {
+      boss[j] = new Boss(width - 40, height/2, 200 * round/2);
+    }
+  }
+ }
 
 // Game over, Restart
 function reset(n) {
@@ -110,9 +164,7 @@ function reset(n) {
   player.x = width/2
   player.y = height/2
   player.health = 100
-  rounds = 1
-  points = 0
-  spawn(rounds*n)
+  spawn(n)
 }
 
 // Bullet direction depending on player direction
@@ -133,6 +185,8 @@ function keyPressed() {
     }
   }
 }
+
+
 
 // Arena
 function walls() {
