@@ -68,7 +68,7 @@ function draw() {
         zombieSpawned[i].health -= bulletDamage
         bulletsFired.splice(j, 1)
         if (zombieSpawned[i].health == 0) {
-          points += 100
+          points +=
           zombieSpawned.splice(i, 1)
         }
       }
