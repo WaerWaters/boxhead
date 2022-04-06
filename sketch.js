@@ -20,8 +20,6 @@ function setup() {
 }
 
 
-
-
 function draw() {
   background(220);
   walls()
@@ -30,6 +28,7 @@ function draw() {
   textSize(32)
   fill(0)
   text(points, 20, 40)
+  text(Math.floor(round), width-50, 40)
   
   // Round system
   if (round % 10 == 0) {
@@ -38,11 +37,9 @@ function draw() {
     spawn(round*2)
     round += 0.5
   }
-  if (player.health == 0) {
-      round = 1
-      reset(round*2);
+  if (player.health <= 0) {
+      reset(2);
   } else if (zombieSpawned.length == 0) {
-    console.log("hey")
     round += 0.5
   }
   
@@ -68,7 +65,7 @@ function draw() {
         zombieSpawned[i].health -= bulletDamage
         bulletsFired.splice(j, 1)
         if (zombieSpawned[i].health == 0) {
-          points +=
+          points += 100
           zombieSpawned.splice(i, 1)
         }
       }
@@ -113,7 +110,9 @@ function reset(n) {
   player.x = width/2
   player.y = height/2
   player.health = 100
-  spawn(n)
+  rounds = 1
+  points = 0
+  spawn(rounds*n)
 }
 
 // Bullet direction depending on player direction

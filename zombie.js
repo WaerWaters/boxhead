@@ -5,7 +5,7 @@ class Zombie{
      this.width = 20;
      this.height = 20;
      this.damage = damage;
-     this.health = health;
+     this.health = 100;
      this.playerPosX = player.x;
      this.playerPosY = player.y;
    
