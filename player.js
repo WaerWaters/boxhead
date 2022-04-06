@@ -5,7 +5,7 @@ class Player{
     this.width = 20
     this.height = 20
     this.speed = 4
-    this.health = 100
+    this.health = 100;
     this.punchDamage = 5
     this.currentDirection
   }
@@ -47,16 +47,16 @@ class Player{
       this.currentDirection = 4
     }
     
-    if (this.x <= 58) {
+    if (this.x <= -2) {
       this.x = this.x + this.speed
     }
-    if (this.x >= width - 78) {
+    if (this.x >= width-18) {
       this.x = this.x - this.speed
     }
-    if (this.y <= 58) {
+    if (this.y <= -2) {
       this.y = this.y + this.speed
     }
-    if (this.y >= height - 78) {
+    if (this.y >= height-18) {
       this.y = this.y - this.speed
     }
   }
