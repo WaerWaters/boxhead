@@ -5,6 +5,7 @@ let gates = [];
 let bulletDamage = 25;
 let round = 1
 let points = 0
+let hearts = 3
 let boss = [];
 
 function setup() {
@@ -159,11 +160,13 @@ function spawnBoss(m){
 
 // Game over, Restart
 function reset(n) {
-  bulletsFired=[];
-  zombieSpawned=[];
+  bulletsFired = []
+  zombieSpawned = []
+  boss = []
   player.x = width/2
   player.y = height/2
   player.health = 100
+  points = 0
   spawn(n)
 }
 
