@@ -2,7 +2,7 @@ let player;
 let zombieSpawned = [];
 let bulletsFired = [];
 let gates = [];
-let bulletDamage = 25;
+let bulletDamage = 100;
 let round = 1
 let points = 0
 let boss = [];
@@ -90,13 +90,19 @@ function draw() {
     boss[l].update()
     for (let j = 0; j < bulletsFired.length; j++) {
       if (bulletsFired[j].x < boss[l].x + boss[l].width && bulletsFired[j].x > boss[l].x - boss[l].width && bulletsFired[j].y < boss[l].y + boss[l].height && bulletsFired[j].y > boss[l].y - boss[l].height) {
-        boss[l].health -= bulletDamage
-        bulletsFired.splice(j, 1)
-        if (boss[l].health == 0) {
-          points += 100;
-          boss.splice(l, 1)
+        if (boss[l].armor > 0) {
+          boss[l].armor -= bulletDamage
+          if (boss[l].armor <= 0) {
+            boss[l].speed = 1.6
+          }
+        } else {
+          boss[l].health -= bulletDamage
+          if (boss[l].health == 0) {
+            points += 500;
+            boss.splice(l,1)
+          }
         }
-      }
+        bulletsFired.splice(j, 1)
     }
   }
 
@@ -106,39 +112,53 @@ function draw() {
     let d = dist(zombieSpawned[i].x,zombieSpawned[i].y,player.x,player.y);
     let damage = 50;
     if(d<16) {
-      player.health = player.health - damage;
+      player.health -= damage;
       zombieSpawned.splice(i,1);
       console.log(player.health);
     }
     
   }
-  for(let j = 0; j < boss.length; j++){
-    let d = dist(boss[j].x,boss[j].y,player.x,player.y);
-    let damage = 100;
-    if(d<22) {
-      player.health = player.health - damage;
-      boss.splice(j,1);
-      console.log(player.health);
-    }
-    if(player.health == 0) {
-      reset();
+    for(let j = 0; j < boss.length; j++){
+      let d = dist(boss[j].x,boss[j].y,player.x,player.y);
+      if(d<22) {
+        player.health = player.health - boss[j].damage;
+        boss.splice(j,1);
+        console.log(player.health);
+      }
+      if(player.health == 0) {
+        reset();
+      }
     }
   }
-  
+  for(i = 0; i < zombieSpawned.length; i++){
+    for(j = 0; j < zombieSpawned.length; j++){
+      if(dist(zombieSpawned[i].x,zombieSpawned[i].y,zombieSpawned[j].x,zombieSpawned[j].y) <= 20 && zombieSpawned[i].x > zombieSpawned[j].x){
+        zombieSpawned[j].x -= 1
+      }
+      if(dist(zombieSpawned[i].x,zombieSpawned[i].y,zombieSpawned[j].x,zombieSpawned[j].y) <= 20 && zombieSpawned[i].x < zombieSpawned[j].x){
+        zombieSpawned[j].x += 1
+      }
+      if(dist(zombieSpawned[i].x,zombieSpawned[i].y,zombieSpawned[j].x,zombieSpawned[j].y) <= 20 && zombieSpawned[i].y > zombieSpawned[j].y){
+        zombieSpawned[j].y -= 1
+      }
+      if(dist(zombieSpawned[i].x,zombieSpawned[i].y,zombieSpawned[j].x,zombieSpawned[j].y) <= 20 && zombieSpawned[i].y < zombieSpawned[j].y){
+        zombieSpawned[j].y += 1
+      }
+    }
+  }
 }
-
 // Spawn zombies
 function spawn(n) {
   for (let i = 0; i < n; i++) {
     rand = Math.floor(Math.random() * 4)
     if (rand == 0) {
-      zombieSpawned[i] = new Zombie(width/2, 20);
+      zombieSpawned[i] = new Zombie(width/2 + (random(50) && random(-50)), 20);
     } else if (rand == 1) {
-      zombieSpawned[i] = new Zombie(20, height/2);
+      zombieSpawned[i] = new Zombie(20, height/2 + (random(50) && random(-50)));
     } else if (rand == 2) {
-      zombieSpawned[i] = new Zombie(width/2, height - 40);
+      zombieSpawned[i] = new Zombie(width/2 + (random(50) && random(-50)), height - 40);
     } else if (rand == 3) {
-      zombieSpawned[i] = new Zombie(width - 40, height/2);
+      zombieSpawned[i] = new Zombie(width - 40, height/2 + (random(50) && random(-50)));
     }
   }
 }
@@ -146,16 +166,16 @@ function spawnBoss(m){
   for (let j = 0; j < m; j++) {
     rand = Math.floor(Math.random() * 4)
     if (rand == 0) {
-      boss[j] = new Boss(width/2, 20, 200 * round/2);
+      boss[j] = new Boss(width/2, 20, 20 * round/2, 100, 200 * round/2);
     } else if (rand == 1) {
-     boss[j] = new Boss(20, height/2, 200 * round/2);
+     boss[j] = new Boss(20, height/2, 20 * round/2, 100, 200 * round/2);
     } else if (rand == 2) {
-      boss[j] = new Boss(width/2, height - 40, 200 * round/2);
+      boss[j] = new Boss(width/2, height - 40, 20 * round/2, 100, 200 * round/2);
     } else if (rand == 3) {
-      boss[j] = new Boss(width - 40, height/2, 200 * round/2);
+      boss[j] = new Boss(width - 40, height/2, 20 * round/2, 100, 200 * round/2);
     }
   }
- }
+}
 
 // Game over, Restart
 function reset(n) {

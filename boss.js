@@ -1,12 +1,14 @@
 class Boss extends Zombie{
-    constructor(x,y,health,damage) {
+    constructor(x,y,health,damage,armor) {
      super(x,y)
       this.width = 30;
       this.height = 30;
       this.damage = damage;
-      this.health = health;
+      this.health = 200;
+      this.armor = 300;
       this.playerPosX = player.x;
       this.playerPosY = player.y;
+      this.speed = 1;
    
     }
    show() {
@@ -17,8 +19,8 @@ class Boss extends Zombie{
    }
    update() {
     let d = dist(this.x,this.y,player.x,player.y)
-      let vx = (player.x-this.x)/d*1.5;
-      let vy = (player.y-this.y)/d*1.5;
+      let vx = (player.x-this.x)/d*this.speed;
+      let vy = (player.y-this.y)/d*this.speed;
       this.x+=vx;
       this.y+=vy;  
    }
