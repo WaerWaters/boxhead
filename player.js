@@ -11,21 +11,18 @@ class Player{
   }
   
   show() {
+    fill(0,0,255)
+    rect(this.x, this.y, this.width, this.height)
     if (keyCode === 65) {
-      fill(0,0,255)
-      rect(this.x, this.y, this.width, this.height)
+      
     } else if (keyCode === 68) {
-      fill(0,0,255)
-      rect(this.x, this.y, this.width, this.height)
+
     } else if (keyCode === 87) {
-      fill(0,0,255)
-      rect(this.x, this.y, this.width, this.height)
+      
     } else if (keyCode === 83) {
-      fill(0,0,255)
-      rect(this.x, this.y, this.width, this.height)
+      
     } else {
-      fill(0,0,255)
-      rect(this.x, this.y, this.width, this.height)
+      
     }
   }
 
@@ -47,21 +44,33 @@ class Player{
       this.currentDirection = 4
     }
     
-    if (this.x <= -2) {
+    if (this.x <= 58) {
       this.x = this.x + this.speed
     }
-    if (this.x >= width-18) {
+    if (this.x >= width-78) {
       this.x = this.x - this.speed
     }
-    if (this.y <= -2) {
+    if (this.y <= 58) {
       this.y = this.y + this.speed
     }
-    if (this.y >= height-18) {
+    if (this.y >= height-78) {
       this.y = this.y - this.speed
     }
   }
   outOfBounds() {
     return(this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.x < 60 && this.y < 240 || this.x < 240 && this.y < 60 || this.x > width-240 && this.y < 60 || this.x > width-60 && this.y < 240 || this.x < 60 && this.y > height-240 || this.x < 240 && this.y > height-60 || this.x > width-240 && this.y > height-60 || this.x > width-60 && this.y > height-240)
+  }
+  barShow() {
+    stroke(0);
+    strokeWeight(2);
+    noFill();
+    rect(this.x - 15, this.y - 10, 50, 5);
+    let maxHealth = 100;
+    noStroke();
+    fill(255, 0, 0);
+    rect(this.x - 15, this.y - 10, map(this.health, 0, maxHealth, 0, 50), 5);
+    strokeWeight(1)
+    stroke(0)
   }
 }
 

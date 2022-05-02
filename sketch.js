@@ -11,11 +11,11 @@ function setup() {
   createCanvas(600, 600);
   player = new Player();
 
- /* append(gates, new Gate(60, 240, 60, height - 240));
+  append(gates, new Gate(60, 240, 60, height - 240));
   append(gates, new Gate(width - 60, 240, width - 60, height - 240));
   append(gates, new Gate(240, 60, width - 240, 60));
   append(gates, new Gate(240, height - 60, width - 240, height - 60));
-*/
+
 
 }
 
@@ -30,6 +30,7 @@ function draw() {
   textSize(32)
   fill(0)
   text(points, 20, 40)
+  text(Math.floor(round), width-50, 40)
   
   // Round system
   if (round % 2 == 0) {
@@ -52,6 +53,8 @@ function draw() {
   // Player display
   player.show()
   player.movement()
+  player.barShow()
+
   for(let j = 0; j < boss.length; j++) {
     boss[j].update();
   }
@@ -142,6 +145,8 @@ function spawn(n) {
     }
   }
 }
+
+// Spawn boss
 function spawnBoss(m){ 
   for (let j = 0; j < m; j++) {
     rand = Math.floor(Math.random() * 4)
@@ -164,6 +169,8 @@ function reset(n) {
   player.x = width/2
   player.y = height/2
   player.health = 100
+  points = 0
+  round = 1
   spawn(n)
 }
 
