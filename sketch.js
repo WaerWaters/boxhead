@@ -106,9 +106,9 @@ function draw() {
           }
         }
         bulletsFired.splice(j, 1)
+      }
     }
   }
-
 
   // Zombie interaction with player
   for(let i = 0; i < zombieSpawned.length; i++){
@@ -121,16 +121,15 @@ function draw() {
     }
     
   }
-    for(let j = 0; j < boss.length; j++){
-      let d = dist(boss[j].x,boss[j].y,player.x,player.y);
-      if(d<22) {
-        player.health = player.health - boss[j].damage;
-        boss.splice(j,1);
-        console.log(player.health);
-      }
-      if(player.health == 0) {
-        reset();
-      }
+  for(let j = 0; j < boss.length; j++){
+    let d = dist(boss[j].x,boss[j].y,player.x,player.y);
+    if(d<22) {
+      player.health = player.health - boss[j].damage;
+      boss.splice(j,1);
+      console.log(player.health);
+    }
+    if(player.health == 0) {
+      reset();
     }
   }
   for(i = 0; i < zombieSpawned.length; i++){
