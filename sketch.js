@@ -2,7 +2,7 @@ let player;
 let zombieSpawned = [];
 let bulletsFired = [];
 let gates = [];
-let bulletDamage = 100;
+let bulletDamage = 50;
 let round = 1
 let points = 0
 let boss = [];
@@ -33,7 +33,7 @@ function draw() {
   text(Math.floor(round), width-50, 40)
   
   // Round system
-  if (round % 2 == 0) {
+  if (round % 5 == 0) {
     spawnBoss(1)
     spawn(round)
     round += 0.5
@@ -91,16 +91,18 @@ function draw() {
   for (let l = 0; l < boss.length; l++) {
     boss[l].show()
     boss[l].update()
+    boss[l].healthBar(round)
     for (let j = 0; j < bulletsFired.length; j++) {
       if (bulletsFired[j].x < boss[l].x + boss[l].width && bulletsFired[j].x > boss[l].x - boss[l].width && bulletsFired[j].y < boss[l].y + boss[l].height && bulletsFired[j].y > boss[l].y - boss[l].height) {
         if (boss[l].armor > 0) {
           boss[l].armor -= bulletDamage
+          console.log(boss[l].armor)
           if (boss[l].armor <= 0) {
             boss[l].speed = 1.6
           }
         } else {
           boss[l].health -= bulletDamage
-          if (boss[l].health == 0) {
+          if (boss[l].health <= 0) {
             points += 500;
             boss.splice(l,1)
           }
@@ -170,13 +172,13 @@ function spawnBoss(m){
   for (let j = 0; j < m; j++) {
     rand = Math.floor(Math.random() * 4)
     if (rand == 0) {
-      boss[j] = new Boss(width/2, 20, 20 * round/2, 100, 200 * round/2);
+      boss[j] = new Boss(width/2, 20, 20 * round/2, 100, 200 * round/2, round);
     } else if (rand == 1) {
-     boss[j] = new Boss(20, height/2, 20 * round/2, 100, 200 * round/2);
+     boss[j] = new Boss(20, height/2, 20 * round/2, 100, 200 * round/2, round);
     } else if (rand == 2) {
-      boss[j] = new Boss(width/2, height - 40, 20 * round/2, 100, 200 * round/2);
+      boss[j] = new Boss(width/2, height - 40, 20 * round/2, 100, 200 * round/2, round);
     } else if (rand == 3) {
-      boss[j] = new Boss(width - 40, height/2, 20 * round/2, 100, 200 * round/2);
+      boss[j] = new Boss(width - 40, height/2, 20 * round/2, 100, 200 * round/2, round);
     }
   }
 }
