@@ -10,13 +10,6 @@ let boss = [];
 function setup() {
   createCanvas(600, 600);
   player = new Player();
-
-  append(gates, new Gate(60, 240, 60, height - 240));
-  append(gates, new Gate(width - 60, 240, width - 60, height - 240));
-  append(gates, new Gate(240, 60, width - 240, 60));
-  append(gates, new Gate(240, height - 60, width - 240, height - 60));
-
-
 }
 
 
